@@ -649,6 +649,7 @@ class DMLOrthoForest(BaseOrthoForest):
             self.transformer = FunctionTransformer(
                 func=_EncoderWrapper(self._one_hot_encoder).encode,
                 validate=False)
+            self._set_encoded_treatment_names(self._one_hot_encoder)
 
         if self.global_residualization:
             cv = check_cv(self.global_res_cv, y=T, classifier=self.discrete_treatment)
@@ -995,6 +996,7 @@ class DROrthoForest(BaseOrthoForest):
         self.transformer = FunctionTransformer(
             func=_EncoderWrapper(self._one_hot_encoder).encode,
             validate=False)
+        self._set_encoded_treatment_names(self._one_hot_encoder)
         # Call `fit` from parent class
         super().fit(Y, T, X=X, W=W, inference=inference)
 
