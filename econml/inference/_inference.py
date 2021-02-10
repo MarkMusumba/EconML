@@ -192,7 +192,7 @@ class GenericSingleTreatmentModelFinalInference(GenericModelFinalInference):
         e_stderr = np.einsum(einsum_str, cme_stderr, np.abs(dT)) if cme_stderr is not None else None
         d_y = self._d_y[0] if self._d_y else 1
         # d_t=1 here since we measure the effect across all Ts
-        # A dummy treatment names is passed in
+        # Omit treatment name argument to fall back to the default
         return NormalInferenceResults(d_t=1, d_y=d_y, pred=e_pred,
                                       pred_stderr=e_stderr, inf_type='effect',
                                       feature_names=self._input_names["feature_names"],
@@ -431,7 +431,7 @@ class GenericModelFinalInferenceDiscrete(Inference):
         pred = pred[np.arange(T0.shape[0]), ..., ind]
         pred_stderr = pred_stderr[np.arange(T0.shape[0]), ..., ind] if pred_stderr is not None else None
         # d_t=1 here since we measure the effect across all Ts
-        # A dummy treatment names is passed in
+        # Omit treatment name argument to fall back to the default
         return NormalInferenceResults(d_t=1, d_y=self.d_y, pred=pred,
                                       pred_stderr=pred_stderr,
                                       inf_type='effect',
@@ -472,7 +472,7 @@ class LinearModelFinalInferenceDiscrete(GenericModelFinalInferenceDiscrete):
             def fname_transformer(x):
                 return x
         # d_t=1 here since we measure the effect across all Ts
-        # A dummy treatment names is passed in
+        # Omit treatment name argument to fall back to the default
         return NormalInferenceResults(d_t=1, d_y=self.d_y, pred=coef, pred_stderr=coef_stderr,
                                       inf_type='coefficient', fname_transformer=fname_transformer,
                                       feature_names=self._input_names["feature_names"],
@@ -499,7 +499,7 @@ class LinearModelFinalInferenceDiscrete(GenericModelFinalInferenceDiscrete):
                  "Only point estimates will be available.")
             intercept_stderr = None
         # d_t=1 here since we measure the effect across all Ts
-        # A dummy treatment names is passed in
+        # Omit treatment name argument to fall back to the default
         return NormalInferenceResults(d_t=1, d_y=self.d_y, pred=self.fitted_models_final[ind].intercept_,
                                       pred_stderr=intercept_stderr,
                                       inf_type='intercept',
